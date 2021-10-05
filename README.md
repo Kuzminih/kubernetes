@@ -55,20 +55,21 @@ minikube ssh
 
 ### just commands
 #### basic
-kubectl get nodes\
-kubectl get pods\
-kubectl run "name" --generator=run-pod/v1 --image=httpd:latest --port=80\
-kubectl get pods\
-kubectl delete pods "name"\
-kubectl describe pods hello\
-kubectl exec -it name ch\
-kubectl logs name\
-kubectl port forward 7788:80 \
-kubectl apply -f file-name.yml\
+```
+kubectl get nodes
+kubectl get pods
+kubectl run "name" --generator=run-pod/v1 --image=httpd:latest --port=80
+kubectl get pods
+kubectl delete pods "name"
+kubectl describe pods hello
+kubectl exec -it name sh
+kubectl logs name
+kubectl port forward 7788:80 
+kubectl apply -f file-name.yml
 kubectl delete -f file-name.yml  ?? reload
-
+```
 #### Deployment
-
+```
 kubectl create deployment "name" --image httpd:latest
 kubectl get deploy
 kubectl get deployment "name"
@@ -86,13 +87,13 @@ kubectl rollout status deployment\"name"
 change image in deployment
 kubectl describe deployment "name"
 "containername" from describe
-```
+###
 containers:
   containername
-```
+###
 kubectl set image deployment/"name" "containername"="new image" --record
 kubectl rollout history deployment\"name"
-
+```
 
 ### manifest yml exampl
 
