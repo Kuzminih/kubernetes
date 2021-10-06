@@ -92,9 +92,51 @@ containers:
   containername
 ###
 kubectl set image deployment/"name" "containername"="new image" --record
-kubectl rollout history deployment\"name"
+kubectl rollout history deployment/"name"
+kubectl rollout undo deployment/"name"
+kubectl rollout undo deployment/"name" --to-revision=4
+# number of the revision can see from stdout 'kubectl rolluot history deployment/"name"'
+kubectl rollout status deployment/"name"
+kubectl describe deployment "name"
+
+kubectl roolout restart deployment/"name"
+kubectl rollout status deployment/"name"
+
+## run deployment manifest example
+kubectl apply -f name.yml
+
+
 ```
 
+### service
+```
+kubectl create deployment "name" --image httpd:latest
+kubectl scale deployment "name" --replicas 4
+
+kubectl expose deployment "name" --type=ClusterIP --port 80
+
+kubectl get services/svc
+
+kubectl delete service "name"
+
+kubectl get services
+
+kubectl expose deployment "name" --type=NodePort --port 80
+
+kubectl get svc
+
+kubectl describe nodes
+
+### loadbalancer in cloud
+
+kubectl expose deployment "name" --type=LoadBalancer --port 80
+kubectl get svc
+
+kubectl apply -f name.yml
+kubectl get svc
+
+
+```
 ### manifest yml exampl
 
 ```
@@ -115,7 +157,7 @@ spec:
         containerPort: 80
         hostPort:80
 ```
-for 2 containers
+### for 2 containers
 ```
 apiVersion: v1
 kind: Pod
@@ -141,6 +183,155 @@ spec:
         containerPort: 8080
         
 ```
+### example manifest for deployment
+```
+apiVersion: apps/v1
+kind: deployment
+metadata:
+  name: my-name-deployment
+  labels:
+    app: my-k8s-application
+spec:
+  selector:
+    matchLabels:
+      project: kgb
+  
+  template:
+    metadata:
+      labels:
+        project: kgb
+    spec:
+      containers:
+        - name: kgb-web
+          image: httpd:latest
+          ports:
+            containerPort: 80
+```
+### manifest with replicas
+```
+apiVersion: apps/v1
+kind: deployment
+metadata:
+  name: my-name-deployment
+  labels:
+    env: my-app
+    app: my-k8s-application
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      project: cia
+  
+  template:
+    metadata:
+      labels:
+        project: cia
+    spec:
+      containers:
+        - name: cia-web
+          image: httpd:latest
+          ports:
+            containerPort: 80
+```
+### manifest with autoscaling
+```
+apiVersion: apps/v1
+kind: deployment
+metadata:
+  name: my-name-deployment
+  labels:
+    env: my-app
+    app: my-k8s-application
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      project: mossad
+  
+  template:
+    metadata:
+      labels:
+        project: mossad
+    spec:
+      containers:
+        - name: mossad-web
+          image: httpd:latest
+          ports:
+            containerPort: 80
+---
+apiVersion: autoscaling/v2beta
+kind: HorizontalPodAutoscaling
+matadata:
+  name: myautoscal
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v2
+    kind: Deployment
+    name: my-name-deployment # должно совпадать с матадатой, именем
+  minReplicas: 3
+  maxReplicas: 5
+  metrics:
+    - type: Resource
+    resource:
+      name: cpu
+      targetAverageUtilization: 70
+    - type: Resource
+    resource:
+      name: memory
+      targetAverageUtilization: 80
+
+
+```
+### manifes service
+```
+apiVersion: apps/v1
+kind: deployment
+metadata:
+  name: my-name-deployment
+  labels:
+    env: my-app
+    app: my-k8s-application
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      project: mossad
+  
+  template:
+    metadata:
+      labels:
+        project: mossad #service will look for those labels
+    spec:
+      containers:
+        - name: mossad-web
+          image: httpd:latest
+          ports:
+            containerPort: 80
+---
+apiVersion: v1
+kind: Service
+matadata:
+  name: service1
+  labels:
+    env: prod
+    app: appv1
+    owner:
+spec:
+  selector:
+    project: mossad #selecting pods with those labels
+  ports:
+    - name: app-listener
+      protocol: tcp
+      port: 80 #port on LB
+      targetport: 80 #port on pod
+    - name: app-listener2
+      protocol: tcp
+      port: 8081 #port on LB
+      targetport: 8080 #port on pod
+  typy: LoadBalancer
+```
+
+
 ## Troubleshooting
 
 kubectl describe pod
