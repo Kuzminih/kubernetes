@@ -108,7 +108,7 @@ kubectl apply -f name.yml
 
 ```
 
-### service
+#### service
 ```
 kubectl create deployment "name" --image httpd:latest
 kubectl scale deployment "name" --replicas 4
@@ -137,7 +137,7 @@ kubectl get svc
 
 
 ```
-### manifest yml exampl
+#### manifest yml exampl
 
 ```
 apiVersion: v1
@@ -157,7 +157,7 @@ spec:
         containerPort: 80
         hostPort:80
 ```
-### for 2 containers
+#### for 2 containers
 ```
 apiVersion: v1
 kind: Pod
@@ -183,7 +183,7 @@ spec:
         containerPort: 8080
         
 ```
-### example manifest for deployment
+#### example manifest for deployment
 ```
 apiVersion: apps/v1
 kind: deployment
@@ -207,7 +207,7 @@ spec:
           ports:
             containerPort: 80
 ```
-### manifest with replicas
+#### manifest with replicas
 ```
 apiVersion: apps/v1
 kind: deployment
@@ -233,7 +233,7 @@ spec:
           ports:
             containerPort: 80
 ```
-### manifest with autoscaling
+#### manifest with autoscaling
 ```
 apiVersion: apps/v1
 kind: deployment
@@ -282,7 +282,7 @@ spec:
 
 
 ```
-### manifes service
+#### manifes service
 ```
 apiVersion: apps/v1
 kind: deployment
