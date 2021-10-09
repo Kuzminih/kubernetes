@@ -69,6 +69,7 @@ kubectl apply -f file-name.yml
 kubectl delete -f file-name.yml  ?? reload
 ```
 #### Deployment
+[manifest example]
 ```
 kubectl create deployment "name" --image httpd:latest
 kubectl get deploy
@@ -109,6 +110,7 @@ kubectl apply -f name.yml
 ```
 
 #### service
+[manifest example]
 ```
 kubectl create deployment "name" --image httpd:latest
 kubectl scale deployment "name" --replicas 4
@@ -135,10 +137,39 @@ kubectl get svc
 kubectl apply -f name.yml
 kubectl get svc
 
+```
+#### Ingress Controller
+[list ingress controllers](https://medium.com/flant-com/comparing-ingress-controllers-for-kubernetes-9b397483b46b)
+[manifest example]
+```
+#ingress rules
+We create rules to route requests between our modules with some resources, such as different web applications located on different pods.
+
+kubectl apply -f (The links can be viewed from the list above) 
+kubectl get services -n projectcontour envoy -o wide
+after we create some [deployments] with [scale] and [service]  
+
+[manifest for ingress rules]
+
+kubectl apply -f file.yml
+kubectl get ingress
+kubectl describe ingress
+
+you can run multiple files describing the rules
+
+You can run the reconfiguration online by reusing kubectl apply
+
+kubectl apply -f file.yml
+kubectl delete ns projectcontour
+```
+
+#### [helm](helm.sh)
 
 ```
-#### manifest yml exampl
 
+```
+## manifest yml exampl
+#### for 1 container 
 ```
 apiVersion: v1
 kind: Pod
@@ -300,7 +331,7 @@ spec:
   template:
     metadata:
       labels:
-        project: mossad #service will look for those labels
+        project: mossad #service will look for those labels(project)
     spec:
       containers:
         - name: mossad-web
@@ -330,8 +361,51 @@ spec:
       targetport: 8080 #port on pod
   typy: LoadBalancer
 ```
+#### manifest for ingress rules
+```
+apiVersion: networking.k8s.io/(version)
+kind: Ingress
+metadata:
+  name: ingress-hosts
 
+  spec:
+    rules:
+    - host: www.examle.com
+      http:
+        path:
+          backend:
+            serviceName: web #name of service
+            servicePort: 80 # service port
 
+    rules:
+    - host: www.examle1.com
+      http:
+        path:
+          backend:
+            serviceName: web1 #name of service1
+            servicePort: 80 # service port
+    rules:
+    - host: www.examle2.com
+      http:
+        path:
+          backend:
+            serviceName: web2 #name of service2
+            servicePort: 80 # service port
+    
+    rules:
+    - host: www.examle2.com
+      http:
+        path:
+        - path: "/page2"
+          backend:
+            serviceName: web3 #name of service3
+            servicePort: 80 # service port
+
+        - path: "/page3"
+          backend:
+            serviceName: web3 #name of service3
+            servicePort: 80 # service port    
+```
 ## Troubleshooting
 
 kubectl describe pod
