@@ -164,10 +164,77 @@ kubectl delete ns projectcontour
 ```
 
 #### [helm](helm.sh)
+create chart.yaml and velues.yaml
+chart: основное описание
+helm create "name"
+exampl:
+```
+apiVersion: v2
+name: App-Helm
+description: "desc"
+type: application
+version: 0.1.0
+appVersion: "1.2.3"
+
+keywords:
+  - apache
+  - http
+  -https
+
+maintainers:
+  - name: "some name"
+  - email: "some email"
+  - url: "some url"
+```
+
+
+values: 
+```
+container:
+  image: "some image"
+replicacount: 2
+```
+go to deployment file and service file
 
 ```
 
+name: {{ .Release.Name }} #helm deployment
+
+
+replicas: {{ .Values.replicaCount }}
+
+image: {{ .Values.container.image }}
 ```
+helm list
+
+helm install app(name) "/path/to/cahrt/"
+
+helm list
+
+kubectl get pods
+kubectl get deploy
+kubectl get service
+
+helm install app1(name) "/path/to/cahrt/"  --set container.image="some else image" #change default variable from variable file
+
+helm chart we can upgrade
+
+helm upgarde  app(name) "/path/to/cahrt/" --set replicaCount=4 --set "some.variable"
+
+kubectl get svc
+helm upgarde  app(name) "/path/to/cahrt/" -f "path/to/variable.yml
+
+can run from archive file
+helm package /path/to/file
+helm install app4 /path/to/file.tgz
+can install charts from internet resourse
+helm search hub apache
+
+helm install custom-apache bitnami/apache -f balbla.yaml
+
+helm delete "name"
+helm un install "name"
+
 ## manifest yml exampl
 #### for 1 container 
 ```
