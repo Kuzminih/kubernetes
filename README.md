@@ -55,6 +55,7 @@ minikube ssh
 
 ### just commands
 #### basic
+[manifest file](https://github.com/Kuzminih/kubernetes#for-1-container)
 ```
 kubectl get nodes
 kubectl get pods
