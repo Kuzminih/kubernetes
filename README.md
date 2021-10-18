@@ -69,7 +69,7 @@ kubectl apply -f file-name.yml
 kubectl delete -f file-name.yml  ?? reload
 ```
 #### Deployment
-[manifest example]
+[manifest example](https://github.com/Kuzminih/kubernetes#example-manifest-for-deployment)
 ```
 kubectl create deployment "name" --image httpd:latest
 kubectl get deploy
@@ -110,7 +110,7 @@ kubectl apply -f name.yml
 ```
 
 #### service
-[manifest example]
+[manifest example](https://github.com/Kuzminih/kubernetes#manifes-service)
 ```
 kubectl create deployment "name" --image httpd:latest
 kubectl scale deployment "name" --replicas 4
@@ -140,7 +140,7 @@ kubectl get svc
 ```
 #### Ingress Controller
 [list ingress controllers](https://medium.com/flant-com/comparing-ingress-controllers-for-kubernetes-9b397483b46b)
-[manifest example]
+[manifest example](https://github.com/Kuzminih/kubernetes#manifest-for-ingress-rules)
 ```
 #ingress rules
 We create rules to route requests between our modules with some resources, such as different web applications located on different pods.
